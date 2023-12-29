@@ -23,9 +23,7 @@ def parse_markdown(filemd, filehtml):
                 count += 1
             if line.startswith('-'):
                 ul = line.split(' ')
-                print(ul[1:])
                 list_generated.append(' '.join(ul[1:]))
-        print(list_generated)
     with open(filehtml, 'a') as file:
         for i in range(count):
             title = ' '.join(HTML_generated[i][1:])
