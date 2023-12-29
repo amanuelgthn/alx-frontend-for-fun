@@ -15,9 +15,10 @@ def parse_markdown(filemd, filehtml):
     title = ''
     with open(filemd, 'r') as file:
         for line in file.readlines():
-            list = line.split(' ')
-            HTML_generated[count] = list
-            count += 1
+            if line.startswith('#'):
+                list = line.split(' ')
+                HTML_generated[count] = list
+                count += 1
     with open(filehtml, 'a') as file:
         for i in range(count):
             title = ' '.join(HTML_generated[i][1:])
