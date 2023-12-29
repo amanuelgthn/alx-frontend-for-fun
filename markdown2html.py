@@ -37,7 +37,7 @@ def parse_markdown(filemd, filehtml):
         for i in list_generated:
             if c == 0:
                 file.write("{}\n".format("<ul>"))
-            file.write("\t<ul>{}</ul>\n".format(i.rstrip('\n')))
+            file.write("\t<li>{}</li>\n".format(i.rstrip('\n')))
             if c == len(list_generated) - 1:
                 file.write("{}\n".format("</ul>"))
             c += 1
