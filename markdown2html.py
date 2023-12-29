@@ -13,34 +13,33 @@ def parse_markdown(filemd, filehtml):
     HTML_generated = {}
     list_generated = []
     count = 0
+    c = 0
     count_li = 0
     title = ''
     with open(filemd, 'r') as file:
         for line in file.readlines():
             if line.startswith('#'):
                 list = line.split(' ')
-                HTML_generated[count] = list
                 count += 1
+                with open(filehtml, 'a') as file:
+                        if c != 0:
+                            file.write("</ul>\n")
+                        title = ' '.join(list[1:])
+                        script = "<h{}>{}</h{}>".format(len(list[0]),
+                                                        title.rstrip('\n'),
+                                                        len(list[0]))
+                        file.write("{}\n".format(script))
+                        c = 0
             if line.startswith('-'):
                 ul = line.split(' ')
-                list_generated.append(' '.join(ul[1:]))
-    with open(filehtml, 'a') as file:
-        for i in range(count):
-            title = ' '.join(HTML_generated[i][1:])
-            script = "<h{}>{}</h{}>".format(len(HTML_generated[i][0]),
-                                            title.rstrip('\n'),
-                                            len(HTML_generated[i][0]))
-            file.write("{}\n".format(script))
-        c = 0
-        for i in list_generated:
-            if c == 0:
-                file.write("{}\n".format("<ul>"))
-            file.write("\t<li>{}</li>\n".format(i.rstrip('\n')))
-            if c == len(list_generated) - 1:
-                file.write("{}\n".format("</ul>"))
-            c += 1
-
-
+                ul = ' '.join(ul[1:])
+                with open(filehtml, 'a') as file:
+                    if c == 0:
+                        file.write("{}\n".format("<ul>"))
+                    file.write("\t<li>{}</li>\n".format(ul.rstrip('\n')))
+                    c += 1
+            
+    
 if __name__ == '__main__':
     """Taking and checking arguments"""
     args = argv
