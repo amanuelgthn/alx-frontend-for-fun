@@ -11,7 +11,9 @@ from os import path
 def parse_markdown(filemd, filehtml):
     """Read and parse a Markdown file"""
     HTML_generated = {}
+    list_generated = []
     count = 0
+    count_li = 0
     title = ''
     with open(filemd, 'r') as file:
         for line in file.readlines():
@@ -19,6 +21,9 @@ def parse_markdown(filemd, filehtml):
                 list = line.split(' ')
                 HTML_generated[count] = list
                 count += 1
+            if line.startswith('-'):
+                ul = line.split(' ')
+                list_generated.append(ul)
     with open(filehtml, 'a') as file:
         for i in range(count):
             title = ' '.join(HTML_generated[i][1:])
@@ -26,6 +31,14 @@ def parse_markdown(filemd, filehtml):
                                             title.rstrip('\n'),
                                             len(HTML_generated[i][0]))
             file.write("{}\n".format(script))
+        c = 0
+        for i in list_generated:
+            if c == 0:
+                file.write("{}\n".format("<ul>"))
+            file.write("\t<ul>{}</ul>\n".format(i[1].rstrip('\n')))
+            if c == len(list_generated) - 1:
+                file.write("{}\n".format("</ul>"))
+            c += 1
 
 
 if __name__ == '__main__':
