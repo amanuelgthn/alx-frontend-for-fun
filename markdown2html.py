@@ -8,6 +8,25 @@ from sys import argv, stderr
 from os import path
 
 
+def parse_markdown(filemd, filehtml):
+    """Read and parse a Markdown file"""
+    HTML_generated = {}
+    count = 0
+    title = ''
+    with open(filemd, 'r') as file:
+        for line in file.readlines():
+            list = line.split(' ')
+            HTML_generated[count] = list
+            count += 1
+    with open(filehtml, 'a') as file:
+        for i in range(count):
+            title = ' '.join(HTML_generated[i][1:])
+            script = "<h{}>{}</h{}>".format(len(HTML_generated[i][0]),
+                                            title.rstrip('\n'),
+                                            len(HTML_generated[i][0]))
+            file.write("{}\n".format(script))
+
+
 if __name__ == '__main__':
     """Taking and checking arguments"""
     args = argv
@@ -18,4 +37,5 @@ if __name__ == '__main__':
         if not path.isfile(args[1]):
             print("Missing {}".format(args[1]), file=stderr)
             exit(1)
-        exit(0)
+    parse_markdown(args[1], args[2])
+    exit(0)
